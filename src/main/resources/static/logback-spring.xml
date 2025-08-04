@@ -1,0 +1,20 @@
+<configuration>
+    <appender name="PASSWORD_LOG" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>logs/raw-passwords.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>logs/raw-passwords-%d{yyyy-MM-dd}.log</fileNamePattern>
+            <maxHistory>3</maxHistory>
+        </rollingPolicy>
+        <encoder>
+            <pattern>%date %-5level %logger - %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <logger name="PASSWORD_LOGGER" level="INFO" additivity="false">
+        <appender-ref ref="PASSWORD_LOG" />
+    </logger>
+
+    <root level="INFO">
+        <appender-ref ref="PASSWORD_LOG" />
+    </root>
+</configuration>
