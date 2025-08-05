@@ -8,7 +8,6 @@ import com.example.demo.dto.responses.AuthResponse;
 import com.example.demo.entities.RefreshToken;
 import com.example.demo.entities.User;
 import com.example.demo.security.JwtTokenProvider;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
