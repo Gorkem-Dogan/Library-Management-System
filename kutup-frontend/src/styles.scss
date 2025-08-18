@@ -1,0 +1,254 @@
+// File: src/styles.scss
+// SKIN TWEAKS: Header spacing, link/button normalization, hero readability, consistent button styling.
+
+// Reset link defaults across the site (so we control color/decoration everywhere)
+a {
+  color: var(--link);
+  text-decoration: none;
+}
+a:hover {
+  text-decoration: underline;
+}
+
+/* Header layout polish */
+.site-header {
+  background: linear-gradient(180deg, rgba(10,10,10,0.9), rgba(10,10,10,0.65));
+  border-bottom: 1px solid var(--border);
+  position: sticky; top: 0; z-index: 1000;
+  box-shadow: var(--shadow);
+  /* Give it a bit more breathing room */
+  padding: 6px 0;
+}
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 16px; /* left/right padding only */
+}
+.nav {
+  display: grid;
+  grid-template-columns: 1fr auto auto; /* brand | menu | auth */
+  align-items: center;
+  gap: 16px;
+}
+.brand {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  line-height: 1;
+}
+.brand-logo {
+  font-family: Cinzel, serif;
+  font-weight: 700;
+  letter-spacing: 2px;
+  font-size: 18px;
+}
+.brand-sub {
+  font-size: 12px;
+  color: var(--muted);
+}
+.menu {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+}
+.menu a {
+  display: inline-block;
+  padding: 8px 10px;
+  border-radius: 4px;
+  color: var(--text);
+}
+.menu a:hover {
+  background: rgba(255,255,255,0.06);
+  text-decoration: none; /* keep it clean */
+}
+.menu a.active {
+  background: rgba(255,255,255,0.08);
+  box-shadow: inset 0 0 0 1px rgba(255,255,255,0.06);
+}
+.auth-actions {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+/* Button normalization (custom .btn and PrimeNG buttons look consistent) */
+.btn {
+  display: inline-block;
+  padding: 8px 14px;
+  border-radius: 6px;
+  border: 1px solid var(--border);
+  background: linear-gradient(180deg, rgba(255,255,255,0.06), rgba(255,255,255,0.02));
+  color: var(--text);
+  cursor: pointer;
+  transition: transform .06s ease, background .2s ease, border-color .2s ease, color .2s ease;
+  line-height: 1.2;
+}
+.btn:hover { background: rgba(255,255,255,0.1); transform: translateY(-1px); text-decoration: none; }
+.btn.primary {
+  background: linear-gradient(180deg, var(--primary), var(--primary-900));
+  border-color: rgba(0,0,0,0.4);
+  color: #111;
+}
+.btn.primary:hover { filter: brightness(1.05); color: #fff; }
+.btn.ghost { background: transparent; }
+.btn.danger { background: var(--danger); border-color: #922b21; color: #fff; }
+
+/* Make PrimeNG .p-button play nice with the theme */
+.p-button {
+  border-radius: 6px !important;
+  padding: 0.6rem 1rem !important;
+  background: linear-gradient(180deg, var(--primary), var(--primary-900)) !important;
+  border: 1px solid rgba(0,0,0,0.5) !important;
+  color: #111 !important;
+}
+.p-button:hover { filter: brightness(1.05); color: #fff !important; }
+
+/* Toolbar over dark bg */
+.p-toolbar {
+  background: rgba(255,255,255,0.03) !important;
+  border: 1px solid var(--border) !important;
+  border-radius: 8px !important;
+  padding: 0.5rem 0.75rem !important;
+}
+
+/* Parallax hero readability + spacing */
+.parallax-hero {
+  position: relative;
+  height: 68vh;
+  min-height: 420px;
+  max-height: 820px;
+  overflow: hidden;
+  border-bottom: 1px solid var(--border);
+  background: #0c0e10;
+  isolation: isolate;
+}
+.hero-layer {
+  position: absolute; inset: 0;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  will-change: transform;
+  pointer-events: none;
+}
+.hero-layer.bg   { background-image: url('/images/home-bg.jpg');        filter: brightness(0.85); }
+.hero-layer.mid  { background-image: url('/images/home-mountains.png'); opacity: 0.9; }
+.hero-layer.fg   { background-image: url('/images/home-foreground.png'); opacity: 0.95; }
+.parallax-veil {
+  position: absolute; inset: 0;
+  background: radial-gradient(ellipse at center, rgba(255,255,255,0.06) 0%, rgba(0,0,0,0.6) 60%);
+}
+.hero-content {
+  position: relative; z-index: 2;
+  height: 100%;
+  display: grid; place-items: center;
+  text-align: center;
+  padding: 0 16px;
+}
+.hero-content > div {
+  max-width: 860px; /* keep lines to readable width */
+  margin: 0 auto;
+}
+.hero-content h1 {
+  margin: 0 0 10px;
+  font-family: Cinzel, serif;
+  font-size: clamp(28px, 5vw, 44px);
+  letter-spacing: 2px;
+  text-shadow: 0 4px 24px rgba(71, 38, 38, 0.6);
+}
+.hero-content p {
+  margin: 0 0 18px;
+  color: var(--muted);
+  text-shadow: 0 2px 12px rgba(0,0,0,0.6);
+}
+.hero-actions {
+  display: flex; gap: 12px; justify-content: center; flex-wrap: wrap;
+}
+.hero-actions a.btn { text-decoration: none; } /* ensure no underline on CTA buttons */
+
+/* Auth backgrounds (Login / Register) */
+.auth-hero {
+  position: relative;
+  min-height: calc(100vh - 64px);
+  background: var(--auth-bg, url('/images/miraak.jpg')) center/cover no-repeat fixed;
+}
+.auth-hero::before {
+  content: ''; position: absolute; inset: 0;
+  background: linear-gradient(180deg, rgba(0,0,0,0.55), rgba(0,0,0,0.75));
+}
+.auth-hero .panel {
+  position: relative;
+  background: rgba(15, 17, 19, 0.8);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  backdrop-filter: blur(4px);
+}
+
+/* Table and dialog polish (unchanged if already present, repeated for clarity) */
+.p-datatable .p-datatable-thead > tr > th {
+  background: #0e1012; border-color: var(--border); color: var(--text);
+  font-family: Cinzel, serif; letter-spacing: 0.5px;
+}
+.p-datatable .p-datatable-tbody > tr > td {
+  background: rgba(255,255,255,0.02); border-color: var(--border);
+}
+
+/* Mobile adjustments */
+@media (max-width: 768px) {
+  .nav { grid-template-columns: 1fr auto; grid-template-areas: "brand auth" "menu menu"; }
+  .brand { grid-area: brand; }
+  .menu { grid-area: menu; justify-content: center; }
+  .auth-actions { grid-area: auth; justify-content: end; }
+  .parallax-hero { height: 56vh; min-height: 360px; }
+}
+.btn-lg {
+  padding: 12px 20px;
+  font-size: 1.05rem;
+  border-radius: 8px;
+}
+.hero-actions {
+  display: flex;
+  gap: 16px;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-top: 6px;
+}
+.hero-actions .btn {
+  min-width: 160px;
+  text-align: center;
+  box-shadow: 0 6px 18px rgba(0,0,0,0.35);
+  border: 1px solid rgba(255,255,255,0.14);
+  text-decoration: none; /* keep links from underlining */
+}
+.hero-actions .btn.primary {
+  background: linear-gradient(180deg, var(--primary), var(--primary-900));
+  color: #111;
+  border-color: rgba(0,0,0,0.45);
+}
+.hero-actions .btn.primary:hover {
+  filter: brightness(1.06);
+  color: #fff;
+}
+.hero-actions .btn.ghost {
+  background: rgba(255,255,255,0.06);
+  color: var(--text);
+  border-color: rgba(255,255,255,0.18);
+}
+.hero-actions .btn.ghost:hover {
+  background: rgba(255,255,255,0.12);
+  text-decoration: none;
+}
+
+/* Improve readability of hero text against background */
+.hero-content h1 {
+  text-shadow: 0 4px 24px rgba(0,0,0,0.85);
+}
+.hero-content p {
+  text-shadow: 0 2px 12px rgba(0,0,0,0.7);
+}
+
+/* Optional: make toolbar buttons slightly larger for consistency */
+.p-button {
+  padding: 0.7rem 1.1rem !important;
+  border-radius: 8px !important;
+}
+

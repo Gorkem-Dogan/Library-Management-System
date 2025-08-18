@@ -2,6 +2,7 @@ package com.example.demo.services;
 
 import com.example.demo.dto.requests.CreateLoanRequest;
 import com.example.demo.dto.requests.UpdateLoanRequest;
+import com.example.demo.dto.responses.FineResponse;
 import com.example.demo.dto.responses.LoanResponse;
 import com.example.demo.entities.*;
 import com.example.demo.exceptions.BadRequestException;
@@ -31,6 +32,7 @@ public class LoanService {
     private final FineRepository fineRepository;
     private final ModelMapper modelMapper;
 
+
     public LoanService(LoanRepository loanRepository,
                        BookRepository bookRepository, UserRepository userRepository, FineRepository fineRepository, ModelMapper modelMapper) {
         this.loanRepository = loanRepository;
@@ -55,7 +57,7 @@ public class LoanService {
         // Rule b) Check if the user has reached their loan limit.
         Long activeLoans = loanRepository.countByUserAndStatus(user, LoanStatus.ACTIVE);
         if (activeLoans >= 5) {
-            throw new BadRequestException("User has reached the maximum loan limit of " + 5 + " books.");
+            throw new BadRequestException("User has reached the maximum loan limit");
         }
 
         // Rule c) Check if the specific book has available copies.
@@ -77,6 +79,7 @@ public class LoanService {
                 .map(this::convertToLoanResponse)
                 .toList();
     }
+
     public LoanResponse getOneLoan(Long loanId) {
         Loan loan = loanRepository.findById(loanId).orElseThrow(() -> new ResourceNotFoundException("Respond with the ID " + loanId + " could not be reached or might be non existent "));
 
@@ -103,14 +106,13 @@ public class LoanService {
         loanToUpdate.setLoanDate(request.getLoanDate());
         loanToUpdate.setDueDate(request.getDueDate());
         loanToUpdate.setReturnDate(request.getReturnDate());
-        if (request.getStatus()!=null && !request.getStatus().isBlank() )
-        {try {
-            LoanStatus status=  LoanStatus.valueOf(request.getStatus().toUpperCase());
-            loanToUpdate.setStatus(status);
-        }catch (IllegalArgumentException exception)
-        {
-            new IllegalArgumentException("Invalid status given : "+request.getStatus());
-        }
+        if (request.getStatus() != null && !request.getStatus().isBlank()) {
+            try {
+                LoanStatus status = LoanStatus.valueOf(request.getStatus().toUpperCase());
+                loanToUpdate.setStatus(status);
+            } catch (IllegalArgumentException exception) {
+                new IllegalArgumentException("Invalid status given : " + request.getStatus());
+            }
 
         }
         Loan savedLoan = loanRepository.save(loanToUpdate);
@@ -151,6 +153,7 @@ public class LoanService {
         Loan loanToSave = loanRepository.save(loanToReturn);
         return convertToLoanResponse(loanToSave);
     }
+
     public List<LoanResponse> getLoanByUsername(String username) {
         List<Loan> loansFromDb = loanRepository.getLoanByUsername(username);
         return loansFromDb.stream()
@@ -169,13 +172,34 @@ public class LoanService {
         response.setStatus(loan.getStatus());
         // 2. Map the nested properties from the related User entity.
         //    It's good practice to check for null in case a relationship is optional.
-        if (loan.getUser()!=null)
+        if (loan.getUser() != null)
             response.setUserId(loan.getUser().getId());
-            response.setUsername(loan.getUser().getUsername());
+        response.setUsername(loan.getUser().getUsername());
         // 3. Map the nested properties from the related Book entity.
-        if (loan.getBook()!=null)
+        if (loan.getBook() != null)
             response.setBookId(loan.getBook().getId());
-            response.setBookTitle(loan.getBook().getTitle());
+        response.setBookTitle(loan.getBook().getTitle());
         return response;
+    }
+
+    public List<FineResponse> getFineByUserName(String username) {
+
+        List<Fine> finesFromDb= fineRepository.getFinesByUserName(username);
+        return finesFromDb.stream().map(this::convertFineToFineResponse).toList();
+    }
+
+    private FineResponse convertFineToFineResponse(Fine fine) {
+        FineResponse response = new FineResponse();
+        Loan loan = fine.getLoan();
+        response.setBookTitle(loan.getBook().getTitle());
+        response.setUserId(loan.getUser().getId().toString());
+        response.setFineAmount(fine.getAmount().toString());
+        response.setLoanId(loan.getId().toString());
+        response.setFineStatus(String.valueOf(fine.getStatus()));
+        return response;
+
+
+
+
     }
 }

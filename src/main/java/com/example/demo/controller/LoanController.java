@@ -2,6 +2,7 @@ package com.example.demo.controller;
 
 import com.example.demo.dto.requests.CreateLoanRequest;
 import com.example.demo.dto.requests.UpdateLoanRequest;
+import com.example.demo.dto.responses.FineResponse;
 import com.example.demo.dto.responses.LoanResponse;
 import com.example.demo.services.LoanService;
 import org.springframework.http.ResponseEntity;
@@ -23,12 +24,12 @@ public class LoanController {
       LoanResponse loanResponse= loanService.createLoan(request);
     return ResponseEntity.ok(loanResponse);}
 
-    @GetMapping
+    @GetMapping("/username")
     public List<LoanResponse> getAllLoans() {
         return loanService.getAllLoans();
     }
 
-    @GetMapping("/username")
+    @GetMapping("/fines")
     public List<LoanResponse> getLoanByUsername(@RequestParam(required = false) String username) {
         return loanService.getLoanByUsername(username);
     }
@@ -38,6 +39,11 @@ public class LoanController {
         return loanService.getOneLoan(loanId);
     }
 
+    @GetMapping("/fine")
+    public List<FineResponse> getFinesByUserName(@RequestParam String username) {
+        return loanService.getFineByUserName(username);
+
+    }
     @PutMapping("/{loanId}/return")
     public ResponseEntity<LoanResponse> returnOneLoan(@PathVariable Long loanId) {
         LoanResponse returnedLoan = loanService.returnLoan(loanId);

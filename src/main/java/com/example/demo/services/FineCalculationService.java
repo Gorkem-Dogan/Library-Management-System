@@ -25,7 +25,7 @@ public class FineCalculationService {
         this.fineRepository = fineRepository;
     }
 
-    @Scheduled(cron = "0 40 14 * * ?")
+    @Scheduled(cron = "0 13 14 * * ?")
     @Transactional
     public void calculateOverdueFines() {
         // Find all active loans that are overdue.

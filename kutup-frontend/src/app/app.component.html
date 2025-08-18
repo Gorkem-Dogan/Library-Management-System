@@ -1,0 +1,30 @@
+<header class="site-header">
+  <div class="container nav">
+    <div class="brand" routerLink="/home" style="cursor: pointer;">
+      <span class="brand-logo">The Arcanaenum</span>
+      <span class="brand-sub">Skyrim Library</span>
+    </div>
+
+    <nav class="menu">
+      <a routerLink="/home" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">Home</a>
+      <a routerLink="/books" routerLinkActive="active">Books</a>
+      <a routerLink="/loans" routerLinkActive="active" *ngIf="isLoggedIn()">My Books</a>
+      <a routerLink="/users" routerLinkActive="active" *ngIf="isLoggedIn()">Users</a>
+    </nav>
+
+    <div class="auth-actions">
+      <ng-container *ngIf="!isLoggedIn(); else loggedInBlock">
+        <button class="btn ghost" routerLink="/login">Login</button>
+        <button class="btn primary" routerLink="/register">Register</button>
+      </ng-container>
+      <ng-template #loggedInBlock>
+        <button class="btn ghost" routerLink="/loans">My Books</button>
+        <button class="btn danger" (click)="logout()">Logout</button>
+      </ng-template>
+    </div>
+  </div>
+</header>
+
+<main>
+  <router-outlet></router-outlet>
+</main>

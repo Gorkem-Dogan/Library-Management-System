@@ -24,5 +24,7 @@ public interface LoanRepository extends JpaRepository<Loan,Long> {
     List<Loan> getLoanByUsername(@Param("username") String username);
     @Query("SELECT l FROM Loan l WHERE l.status = :status AND l.dueDate < :now")
     List<Loan> findOverdueLoans(@Param("status") LoanStatus loanStatus, @Param("now") LocalDate currentDate);
+
+    String getLoanById(Long id);
 }
 
