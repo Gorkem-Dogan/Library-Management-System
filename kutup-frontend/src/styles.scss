@@ -1,254 +1,392 @@
-// File: src/styles.scss
-// SKIN TWEAKS: Header spacing, link/button normalization, hero readability, consistent button styling.
-
-// Reset link defaults across the site (so we control color/decoration everywhere)
-a {
-  color: var(--link);
-  text-decoration: none;
+:root {
+  --bg: #0f1113;
+  --bg-2: #15181b;
+  --panel: #121417;
+  --panel-2: #171a1e;
+  --text: #e8e6e3;          /* Frost White */
+  --muted: #9aa3a9;         /* Steel Gray */
+  --primary: #bfa16a;       /* Dragon Gold */
+  --primary-900: #8f7b4c;
+  --danger: #c0392b;
+  --link: #c7b07a;
+  --border: rgba(255,255,255,0.08);
+  --shadow: 0 10px 30px rgba(0,0,0,0.45);
 }
-a:hover {
-  text-decoration: underline;
+
+html, body {
+  height: 100%;
+  background: radial-gradient(ellipse at top, #0d0f11 0%, var(--bg) 45%) fixed;
+  color: var(--text);
+  font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+  margin: 0;
+  font-size: 16px;
 }
 
-/* Header layout polish */
+h1, h2, h3, .brand-logo {
+  font-family: Cinzel, serif;
+  letter-spacing: 1px;
+}
+
+/* Links global reset */
+a { color: var(--link); text-decoration: none; }
+a:hover { text-decoration: underline; }
+
+/* Header */
 .site-header {
   background: linear-gradient(180deg, rgba(10,10,10,0.9), rgba(10,10,10,0.65));
   border-bottom: 1px solid var(--border);
   position: sticky; top: 0; z-index: 1000;
   box-shadow: var(--shadow);
-  /* Give it a bit more breathing room */
   padding: 6px 0;
 }
-.container {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 0 16px; /* left/right padding only */
-}
+.container { max-width: 1200px; margin: 0 auto; padding: 0 16px; }
 .nav {
   display: grid;
   grid-template-columns: 1fr auto auto; /* brand | menu | auth */
   align-items: center;
   gap: 16px;
 }
+
+/* Brand */
 .brand {
-  display: flex;
-  align-items: baseline;
-  gap: 8px;
-  line-height: 1;
+  display: flex; align-items: baseline; gap: 10px; line-height: 1;
 }
 .brand-logo {
-  font-family: Cinzel, serif;
-  font-weight: 700;
-  letter-spacing: 2px;
-  font-size: 18px;
+  font-weight: 700; letter-spacing: 2px; font-size: 19px; color: var(--text);
+  text-shadow: 0 2px 10px rgba(0,0,0,0.6);
 }
 .brand-sub {
-  font-size: 12px;
-  color: var(--muted);
-}
-.menu {
-  display: flex;
-  gap: 16px;
-  align-items: center;
-}
-.menu a {
-  display: inline-block;
-  padding: 8px 10px;
-  border-radius: 4px;
-  color: var(--text);
-}
-.menu a:hover {
-  background: rgba(255,255,255,0.06);
-  text-decoration: none; /* keep it clean */
-}
-.menu a.active {
-  background: rgba(255,255,255,0.08);
-  box-shadow: inset 0 0 0 1px rgba(255,255,255,0.06);
-}
-.auth-actions {
-  display: flex;
-  gap: 8px;
-  align-items: center;
+  font-size: 12px; color: var(--muted);
 }
 
-/* Button normalization (custom .btn and PrimeNG buttons look consistent) */
-.btn {
+/* Menu links (bigger and readable) */
+.menu { display: flex; gap: 18px; align-items: center; }
+.nav-link {
   display: inline-block;
-  padding: 8px 14px;
+  padding: 10px 12px;
   border-radius: 6px;
-  border: 1px solid var(--border);
-  background: linear-gradient(180deg, rgba(255,255,255,0.06), rgba(255,255,255,0.02));
+  font-size: 1.05rem;
+  font-weight: 600;
   color: var(--text);
-  cursor: pointer;
-  transition: transform .06s ease, background .2s ease, border-color .2s ease, color .2s ease;
-  line-height: 1.2;
+  text-shadow: 0 2px 8px rgba(0,0,0,0.5);
+  transition: background .2s ease, color .2s ease, transform .06s ease;
 }
-.btn:hover { background: rgba(255,255,255,0.1); transform: translateY(-1px); text-decoration: none; }
-.btn.primary {
+.nav-link:hover {
+  background: rgba(255,255,255,0.07);
+  color: var(--primary);
+  text-decoration: none;
+}
+.nav-link.active {
+  background: rgba(255,255,255,0.1);
+  color: var(--primary);
+  box-shadow: inset 0 0 0 1px rgba(255,255,255,0.08);
+}
+
+/* Auth actions (top-right CTAs) */
+.auth-actions { display: flex; gap: 10px; align-items: center; }
+.nav-cta {
+  display: inline-block;
+  padding: 10px 16px;
+  border-radius: 8px;
+  font-size: 1.05rem;
+  font-weight: 700;
+  letter-spacing: 0.2px;
+  text-shadow: 0 2px 8px rgba(0,0,0,0.5);
+  transition: transform .06s ease, filter .15s ease, background .2s ease, color .2s ease, border-color .2s ease;
+  border: 1px solid rgba(255,255,255,0.16);
+  color: var(--text);
+  background: rgba(255,255,255,0.06);
+}
+.nav-cta:hover { transform: translateY(-1px); filter: brightness(1.05); text-decoration: none; }
+.nav-cta.primary {
   background: linear-gradient(180deg, var(--primary), var(--primary-900));
-  border-color: rgba(0,0,0,0.4);
+  border-color: rgba(0,0,0,0.45);
   color: #111;
 }
-.btn.primary:hover { filter: brightness(1.05); color: #fff; }
-.btn.ghost { background: transparent; }
-.btn.danger { background: var(--danger); border-color: #922b21; color: #fff; }
-
-/* Make PrimeNG .p-button play nice with the theme */
-.p-button {
-  border-radius: 6px !important;
-  padding: 0.6rem 1rem !important;
-  background: linear-gradient(180deg, var(--primary), var(--primary-900)) !important;
-  border: 1px solid rgba(0,0,0,0.5) !important;
-  color: #111 !important;
+.nav-cta.primary:hover { color: #fff; }
+.nav-cta.ghost {
+  background: rgba(255,255,255,0.06);
+  color: var(--text);
+  border-color: rgba(255,255,255,0.2);
 }
-.p-button:hover { filter: brightness(1.05); color: #fff !important; }
-
-/* Toolbar over dark bg */
-.p-toolbar {
-  background: rgba(255,255,255,0.03) !important;
-  border: 1px solid var(--border) !important;
-  border-radius: 8px !important;
-  padding: 0.5rem 0.75rem !important;
+.nav-cta.ghost:hover {
+  background: rgba(255,255,255,0.12);
+}
+.nav-cta.danger {
+  background: linear-gradient(180deg, var(--danger), #8e2f26);
+  border-color: rgba(0,0,0,0.5);
+  color: #fff;
 }
 
-/* Parallax hero readability + spacing */
-.parallax-hero {
-  position: relative;
-  height: 68vh;
-  min-height: 420px;
-  max-height: 820px;
-  overflow: hidden;
-  border-bottom: 1px solid var(--border);
-  background: #0c0e10;
-  isolation: isolate;
-}
+/* Hero tweaks (ensure text stands out) */
 .hero-layer {
-  position: absolute; inset: 0;
+  position: absolute;
+  inset: 0;
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
   will-change: transform;
   pointer-events: none;
 }
-.hero-layer.bg   { background-image: url('/images/home-bg.jpg');        filter: brightness(0.85); }
-.hero-layer.mid  { background-image: url('/images/home-mountains.png'); opacity: 0.9; }
-.hero-layer.fg   { background-image: url('/images/home-foreground.png'); opacity: 0.95; }
-.parallax-veil {
-  position: absolute; inset: 0;
-  background: radial-gradient(ellipse at center, rgba(255,255,255,0.06) 0%, rgba(0,0,0,0.6) 60%);
-}
-.hero-content {
-  position: relative; z-index: 2;
-  height: 100%;
-  display: grid; place-items: center;
-  text-align: center;
-  padding: 0 16px;
-}
-.hero-content > div {
-  max-width: 860px; /* keep lines to readable width */
-  margin: 0 auto;
-}
+.hero-layer.bg   { background-image: url('/images/home-bg.jpg');        filter: brightness(0.85); transform: translate3d(0,0,0); }
+.hero-layer.mid  { background-image: url('/images/home-mountains.png'); opacity: 0.9;             transform: translate3d(0,0,0); }
+.hero-layer.fg   { background-image: url('/images/home-foreground.png'); opacity: 0.95;           transform: translate3d(0,0,0); }
+
+
 .hero-content h1 {
-  margin: 0 0 10px;
-  font-family: Cinzel, serif;
-  font-size: clamp(28px, 5vw, 44px);
-  letter-spacing: 2px;
-  text-shadow: 0 4px 24px rgba(71, 38, 38, 0.6);
+  font-size: clamp(30px, 5.2vw, 48px);
+  text-shadow: 0 4px 24px rgba(0,0,0,0.85);
+  color: var(--text);
 }
 .hero-content p {
-  margin: 0 0 18px;
   color: var(--muted);
-  text-shadow: 0 2px 12px rgba(0,0,0,0.6);
+  text-shadow: 0 2px 12px rgba(0,0,0,0.7);
 }
-.hero-actions {
-  display: flex; gap: 12px; justify-content: center; flex-wrap: wrap;
-}
-.hero-actions a.btn { text-decoration: none; } /* ensure no underline on CTA buttons */
-
-/* Auth backgrounds (Login / Register) */
+.hero-actions { gap: 18px; }
+.hero-actions .btn { min-width: 170px; }
 .auth-hero {
   position: relative;
   min-height: calc(100vh - 64px);
+  /* Default Miraak; can be overridden inline via --auth-bg */
   background: var(--auth-bg, url('/images/miraak.jpg')) center/cover no-repeat fixed;
 }
-.auth-hero::before {
-  content: ''; position: absolute; inset: 0;
-  background: linear-gradient(180deg, rgba(0,0,0,0.55), rgba(0,0,0,0.75));
-}
-.auth-hero .panel {
-  position: relative;
-  background: rgba(15, 17, 19, 0.8);
-  border: 1px solid var(--border);
-  border-radius: 10px;
-  backdrop-filter: blur(4px);
-}
-
-/* Table and dialog polish (unchanged if already present, repeated for clarity) */
-.p-datatable .p-datatable-thead > tr > th {
-  background: #0e1012; border-color: var(--border); color: var(--text);
-  font-family: Cinzel, serif; letter-spacing: 0.5px;
-}
-.p-datatable .p-datatable-tbody > tr > td {
-  background: rgba(255,255,255,0.02); border-color: var(--border);
-}
-
-/* Mobile adjustments */
-@media (max-width: 768px) {
-  .nav { grid-template-columns: 1fr auto; grid-template-areas: "brand auth" "menu menu"; }
-  .brand { grid-area: brand; }
-  .menu { grid-area: menu; justify-content: center; }
-  .auth-actions { grid-area: auth; justify-content: end; }
-  .parallax-hero { height: 56vh; min-height: 360px; }
-}
-.btn-lg {
-  padding: 12px 20px;
-  font-size: 1.05rem;
-  border-radius: 8px;
-}
-.hero-actions {
-  display: flex;
+/* Books layout (left sidebar + results) */
+.books-layout {
+  display: grid;
+  grid-template-columns: 290px 1fr;
   gap: 16px;
-  justify-content: center;
-  flex-wrap: wrap;
-  margin-top: 6px;
 }
-.hero-actions .btn {
-  min-width: 160px;
-  text-align: center;
-  box-shadow: 0 6px 18px rgba(0,0,0,0.35);
-  border: 1px solid rgba(255,255,255,0.14);
-  text-decoration: none; /* keep links from underlining */
+
+.books-sidebar {
+  position: sticky;
+  top: 76px; /* keep under sticky header */
+  align-self: start;
 }
-.hero-actions .btn.primary {
-  background: linear-gradient(180deg, var(--primary), var(--primary-900));
-  color: #111;
-  border-color: rgba(0,0,0,0.45);
+
+.books-results {
+  display: grid;
+  gap: 12px;
 }
-.hero-actions .btn.primary:hover {
-  filter: brightness(1.06);
-  color: #fff;
+
+.books-results-header {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
 }
-.hero-actions .btn.ghost {
-  background: rgba(255,255,255,0.06);
+.muted { color: var(--muted); }
+
+/* Card grid */
+.books-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 12px;
+  position: relative;
+}
+
+.books-grid.loading {
+  min-height: 160px;
+}
+
+.books-loading {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+}
+
+/* Book card */
+/* Make card larger */
+.book-card {
+  display: grid;
+  grid-template-columns: 140px 1fr; /* was 110px */
+  gap: 18px;                        /* was 14px */
+  align-items: start;
+  padding: 12px;                    /* add some inner space */
+}
+
+.book-cover {
+  width: 140px;                     /* was 110px */
+  height: 200px;                    /* was 160px */
+  border-radius: 10px;              /* was 8px */
+  overflow: hidden;
+  background: rgba(255,255,255,0.04);
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow);
+}
+.book-cover img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.book-info {
+  display: grid;
+  gap: 10px;                        /* was 8px */
+}
+
+.book-title {
+  font-family: Cinzel, serif;
+  font-size: 1.25rem;               /* was 1.1rem */
   color: var(--text);
-  border-color: rgba(255,255,255,0.18);
+  text-decoration: none;
 }
-.hero-actions .btn.ghost:hover {
-  background: rgba(255,255,255,0.12);
+.book-title:hover {
+  color: var(--primary);
   text-decoration: none;
 }
 
-/* Improve readability of hero text against background */
-.hero-content h1 {
-  text-shadow: 0 4px 24px rgba(0,0,0,0.85);
+.book-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;                         /* was 6px */
+  align-items: center;
+  color: var(--muted);
+  font-size: 1.05rem;               /* was 0.95rem */
 }
-.hero-content p {
-  text-shadow: 0 2px 12px rgba(0,0,0,0.7);
+.sep { opacity: 0.5; }
+
+.book-desc {
+  color: var(--text);
+  opacity: 0.9;
+  line-height: 1.5;                 /* was 1.35 */
+  max-height: 4.5em;                /* show a bit more */
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
-/* Optional: make toolbar buttons slightly larger for consistency */
-.p-button {
-  padding: 0.7rem 1.1rem !important;
+.book-stats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;                         /* was 6px */
+}
+.badge {
+  padding: 5px 10px;                /* was 3px 8px */
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  background: rgba(255,255,255,0.04);
+  font-size: 0.95rem;               /* was 0.85rem */
+  color: var(--text);
+}
+.badge-ok { border-color: rgba(0,255,127,0.2); background: rgba(0,255,127,0.08); }
+.badge-warn { border-color: rgba(255,99,71,0.2); background: rgba(255,99,71,0.08); }
+
+.book-actions {
+  display: flex;
+  gap: 10px;                        /* was 8px */
+}
+/* Make the action buttons a bit larger */
+.book-actions .p-button {
+  padding: 0.6rem 1rem !important;
   border-radius: 8px !important;
+  font-size: 0.95rem !important;
 }
 
+/* Responsive */
+@media (max-width: 980px) {
+  .books-layout {
+    grid-template-columns: 1fr;
+  }
+  .books-sidebar {
+    position: static;
+    order: 1;
+  }
+  .books-results {
+    order: 2;
+  }
+  .book-card {
+    grid-template-columns: 110px 1fr; /* was 90px */
+    gap: 14px;
+  }
+  .book-cover {
+    width: 110px;                   /* was 90px */
+    height: 160px;                  /* was 132px */
+  }
+  .book-title { font-size: 1.15rem; }
+  .book-meta { font-size: 1rem; }
+}
+/* Giant Elder Scroll only (with caption) */
+.parallax-hero {
+  position: relative;
+  height: 92vh;
+  min-height: 640px;
+  max-height: 1000px;
+  overflow: hidden;
+  border-bottom: 1px solid var(--border);
+  background: #0c0e10;
+  isolation: isolate;
+}
+.hero-content { position: relative; z-index: 2; height: 100%; display: grid; place-items: center; }
+.hero-center { display: grid; place-items: center; width: 100%; height: 100%; }
+
+/* Scroll image container so we can overlay text */
+.scroll-stage {
+  position: relative;
+  display: grid;
+  place-items: stretch;
+}
+.giant-scroll {
+  width: min(90vw, 1600px);
+  height: min(120vh, 900px);
+  object-fit: cover;
+  filter: drop-shadow(0 12px 30px rgba(0,0,0,0.6));
+  border-radius: 18px;
+}
+/* ... existing code ... */
+.scroll-caption {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  padding: clamp(16px, 4vw, 48px);
+  text-align: center;
+}
+
+/* New: put title and subtitle on the same line */
+.scroll-caption-line {
+  display: inline-flex;
+  align-items: baseline;
+  gap: clamp(8px, 1.2vw, 16px);
+  flex-wrap: wrap; /* if too narrow (mobile), it will wrap gracefully */
+  justify-content: center;
+}
+
+/* ... existing code ... */
+.scroll-caption-title {
+  font-family: Cinzel, serif;
+  font-weight: 700;
+  letter-spacing: 2.5px;
+  font-size: clamp(40px, 6.5vw, 96px);
+  color: #2b1f0f;
+  mix-blend-mode: multiply;
+  text-shadow:
+    0 2px 10px rgba(0,0,0,0.18),
+    0 0 1px rgba(0,0,0,0.45);
+  line-height: 1.05;
+}
+
+/* Adjust: no top margin so it sits right after the title */
+.scroll-caption-sub {
+  margin: 0; /* was margin-top */
+  font-size: clamp(16px, 2.2vw, 28px);
+  letter-spacing: 0.6px;
+  color: #3a2a14;
+  opacity: 0.98;
+  mix-blend-mode: multiply;
+  text-shadow: 0 1px 6px rgba(0,0,0,0.18);
+}
+/* ... existing code ... */
+
+
+/* Veil so the scroll pops above background */
+.parallax-veil {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse at center, rgba(0,0,0,0.35) 10%, rgba(0,0,0,0.65) 65%);
+}
+.hero-layer.mid { opacity: 0.8; }
+.hero-layer.fg  { opacity: 0.85; }
+
+@media (max-width: 768px) {
+  .parallax-hero { height: 82vh; min-height: 520px; }
+  .giant-scroll { width: 94vw; height: 70vh; }
+}

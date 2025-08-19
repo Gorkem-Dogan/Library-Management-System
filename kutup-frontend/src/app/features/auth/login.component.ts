@@ -8,11 +8,12 @@ import {InputTextModule} from 'primeng/inputtext';
 import {ButtonModule} from 'primeng/button';
 import {ToastModule} from 'primeng/toast';
 import {MessageService} from 'primeng/api';
+import {PasswordModule} from 'primeng/password';
 
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, InputTextModule, ButtonModule, ToastModule],
+  imports: [CommonModule, ReactiveFormsModule, InputTextModule, ButtonModule, ToastModule, PasswordModule],
   providers: [MessageService],
   template: `
     <p-toast></p-toast>
@@ -20,17 +21,39 @@ import {MessageService} from 'primeng/api';
       <div style="max-width: 520px; margin: 40px auto;">
         <div class="panel">
           <h2 class="panel-title">Dragonborn Login</h2>
+
           <form [formGroup]="form" class="form-grid" (ngSubmit)="submit()">
             <div>
-              <label>Username</label>
-              <input pInputText formControlName="username"/>
+              <label for="username">Username</label>
+              <input id="username" pInputText formControlName="username" autocomplete="username" />
+              <small *ngIf="form.get('username')?.touched && form.get('username')?.invalid" style="color:#fca5a5;">
+                Username is required.
+              </small>
             </div>
+
             <div>
-              <label>Password</label>
-              <input pInputText type="password" formControlName="password"/>
+              <label for="password">Password</label>
+              <p-password
+                inputId="password"
+                formControlName="password"
+                [feedback]="false"
+                [toggleMask]="true"
+                [inputStyle]="{ width: '100%' }"
+                autocomplete="current-password">
+              </p-password>
+              <small *ngIf="form.get('password')?.touched && form.get('password')?.invalid" style="color:#fca5a5;">
+                Password is required.
+              </small>
             </div>
+
             <div style="display:flex; gap:8px; justify-content:flex-end; margin-top:8px;">
-              <button pButton type="submit" label="Login" [disabled]="form.invalid || loading"></button>
+              <button
+                pButton
+                type="submit"
+                label="Login"
+                [loading]="loading"
+                [disabled]="form.invalid || loading">
+              </button>
             </div>
           </form>
         </div>
@@ -55,7 +78,10 @@ export class LoginComponent {
   }
 
   submit() {
-    if (this.form.invalid) return;
+    if (this.form.invalid) {
+      this.form.markAllAsTouched();
+      return;
+    }
     this.loading = true;
     this.auth.login(this.form.value as any).subscribe({
       next: res => {
